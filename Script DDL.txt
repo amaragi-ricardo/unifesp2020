@@ -1,0 +1,422 @@
+-- Gerado por Oracle SQL Developer Data Modeler 19.4.0.350.1424
+--   em:        2020-11-18 21:53:06 BRT
+--   site:      Oracle Database 11g
+--   tipo:      Oracle Database 11g
+
+--DROP TABLE tb_func CASCADE CONSTRAINTS;
+--DROP TABLE tb_perfil CASCADE CONSTRAINTS;
+--DROP TABLE tb_efeitos CASCADE CONSTRAINTS;
+--DROP TABLE tb_efeitos_show CASCADE CONSTRAINTS;
+--DROP TABLE tb_equip CASCADE CONSTRAINTS;
+--DROP TABLE tb_equip_show CASCADE CONSTRAINTS;
+--DROP TABLE tb_artista CASCADE CONSTRAINTS;
+--DROP TABLE tb_setor CASCADE CONSTRAINTS;
+--DROP TABLE tb_show CASCADE CONSTRAINTS;
+--DROP TABLE tb_show_set CASCADE CONSTRAINTS;
+--DROP TABLE tb_staff CASCADE CONSTRAINTS;
+--DROP TABLE tb_musica CASCADE CONSTRAINTS;
+--DROP TABLE tb_ingresso CASCADE CONSTRAINTS;
+
+CREATE TABLE tb_artista (
+    id_artista    NUMBER(3) NOT NULL,
+    nome_artista  VARCHAR2(200)
+);
+
+COMMENT ON COLUMN tb_artista.id_artista IS
+    'Chave Primária da tabela TB_ARTISTA';
+
+COMMENT ON COLUMN tb_artista.nome_artista IS
+    'Nome do artista que ira performar a musica.';
+
+ALTER TABLE tb_artista ADD CONSTRAINT tb_artista_pk PRIMARY KEY ( id_artista );
+
+CREATE TABLE tb_efeitos (
+    id_efeito  NUMBER(3) NOT NULL,
+    efeito     VARCHAR2(200)
+);
+
+COMMENT ON COLUMN tb_efeitos.id_efeito IS
+    'Chave Primária da tabela TB_EFEITOS';
+
+COMMENT ON COLUMN tb_efeitos.efeito IS
+    'Efeito que ocorrerá no show.';
+
+ALTER TABLE tb_efeitos ADD CONSTRAINT tb_efeitos_pk PRIMARY KEY ( id_efeito );
+
+CREATE TABLE tb_efeitos_show (
+    id_efeitos_show       NUMBER(6) NOT NULL,
+    tb_show_id_show       NUMBER(3) NOT NULL,
+    tb_musica_id_musica   NUMBER(3) NOT NULL,
+    tb_efeitos_id_efeito  NUMBER(3) NOT NULL
+);
+
+COMMENT ON COLUMN tb_efeitos_show.id_efeitos_show IS
+    'Chave Primária da tabela TB_EFEITOS_SHOW';
+
+ALTER TABLE tb_efeitos_show
+    ADD CONSTRAINT tb_efeitos_show_pk PRIMARY KEY ( tb_efeitos_id_efeito,
+                                                    tb_show_id_show,
+                                                    id_efeitos_show,
+                                                    tb_musica_id_musica );
+
+CREATE TABLE tb_equip (
+    id_equip     NUMBER(3) NOT NULL,
+    equipamento  VARCHAR2(200)
+);
+
+COMMENT ON COLUMN tb_equip.id_equip IS
+    'Chave Primária da tabela TB_EQUIP';
+
+COMMENT ON COLUMN tb_equip.equipamento IS
+    'Nome do equipamento que será utilizado durante o show.';
+
+ALTER TABLE tb_equip ADD CONSTRAINT tb_equip_pk PRIMARY KEY ( id_equip );
+
+CREATE TABLE tb_equip_show (
+    id_equip_show      NUMBER(6) NOT NULL,
+    tb_show_id_show    NUMBER(3) NOT NULL,
+    tb_equip_id_equip  NUMBER(3) NOT NULL
+);
+
+COMMENT ON COLUMN tb_equip_show.id_equip_show IS
+    'Chave Primária da tabela TB_EQUIP_SHOW';
+
+ALTER TABLE tb_equip_show
+    ADD CONSTRAINT tb_equip_show_pk PRIMARY KEY ( tb_show_id_show,
+                                                  tb_equip_id_equip,
+                                                  id_equip_show );
+
+CREATE TABLE tb_func (
+    id_func              NUMBER(3) NOT NULL,
+    nome                 VARCHAR2(200),
+    cpf                  VARCHAR2(11),
+    dt_nascto            DATE,
+    tb_perfil_id_perfil  NUMBER(3) NOT NULL
+);
+
+COMMENT ON COLUMN tb_func.id_func IS
+    'Chave primária da tabela TB_FUNC.';
+
+COMMENT ON COLUMN tb_func.nome IS
+    'Nome do funcionário.';
+
+COMMENT ON COLUMN tb_func.cpf IS
+    'CPF do funcionário.';
+
+COMMENT ON COLUMN tb_func.dt_nascto IS
+    'Data de Nascimento do funcionário.';
+
+ALTER TABLE tb_func ADD CONSTRAINT tb_func_pk PRIMARY KEY ( id_func );
+
+CREATE TABLE tb_ingresso (
+    id_ingresso        NUMBER(6) NOT NULL,
+    tb_show_id_show    NUMBER(3) NOT NULL,
+    tb_setor_id_setor  NUMBER(3) NOT NULL
+);
+
+COMMENT ON COLUMN tb_ingresso.id_ingresso IS
+    'Chave primária da tabela TB_INGRESSO.';
+
+ALTER TABLE tb_ingresso ADD CONSTRAINT tb_ingresso_pk PRIMARY KEY ( id_ingresso );
+
+CREATE TABLE tb_mj_covers (
+    id_cover      NUMBER(9) NOT NULL,
+    nome_artista  VARCHAR2(200),
+    faixa_cover   VARCHAR2(200),
+    aprovacao     NUMBER(1, 3)
+);
+
+COMMENT ON COLUMN tb_mj_covers.id_cover IS
+    'Chave primária da tabela ID_MJ_COVERS.';
+
+COMMENT ON COLUMN tb_mj_covers.nome_artista IS
+    'Nome do artista.';
+
+COMMENT ON COLUMN tb_mj_covers.faixa_cover IS
+    'Nome da faixa musical.';
+
+COMMENT ON COLUMN tb_mj_covers.aprovacao IS
+    'Taxa de aprovação do cover.';
+
+ALTER TABLE tb_mj_covers ADD CONSTRAINT tb_mj_covers_pk PRIMARY KEY ( id_cover );
+
+CREATE TABLE tb_mj_estadio (
+    id_mj_estadio     NUMBER(9) NOT NULL,
+    estadio           VARCHAR2(200),
+    cidade            VARCHAR2(200),
+    uf                VARCHAR2(2),
+    regiao            VARCHAR2(200),
+    area_estado       NUMBER(20, 2),
+    populacao_estado  NUMBER(20),
+    hab_km2           NUMBER(10, 3),
+    capacidade        NUMBER(10)
+);
+
+COMMENT ON COLUMN tb_mj_estadio.id_mj_estadio IS
+    'Chave primária da tabela TB_MJ_ESTADIO';
+
+COMMENT ON COLUMN tb_mj_estadio.estadio IS
+    'Nome do estádio.';
+
+COMMENT ON COLUMN tb_mj_estadio.cidade IS
+    'Cidade do estádio.';
+
+COMMENT ON COLUMN tb_mj_estadio.uf IS
+    'Estado do estádio.';
+
+COMMENT ON COLUMN tb_mj_estadio.regiao IS
+    'Região do estádio.';
+
+COMMENT ON COLUMN tb_mj_estadio.area_estado IS
+    'Área do Estado.';
+
+COMMENT ON COLUMN tb_mj_estadio.populacao_estado IS
+    'População total do Estado.';
+
+COMMENT ON COLUMN tb_mj_estadio.hab_km2 IS
+    'Habitantes por quilometro quadrado do Estado.';
+
+COMMENT ON COLUMN tb_mj_estadio.capacidade IS
+    'Capacidade do estádio.';
+
+ALTER TABLE tb_mj_estadio ADD CONSTRAINT tb_mj_estadio_pk PRIMARY KEY ( id_mj_estadio );
+
+CREATE TABLE tb_mj_musicas (
+    id_mj_musicas  NUMBER(9) NOT NULL,
+    artist_name    VARCHAR2(50),
+    track_name     VARCHAR2(1024),
+    genero         VARCHAR2(50),
+    popularity     NUMBER(38),
+    danceability   VARCHAR2(26),
+    duration_ms    NUMBER(38)
+);
+
+COMMENT ON COLUMN tb_mj_musicas.id_mj_musicas IS
+    'Chave primária da tabela TB_MJ_MUSICAS.
+';
+
+COMMENT ON COLUMN tb_mj_musicas.artist_name IS
+    'Nome do artista.';
+
+COMMENT ON COLUMN tb_mj_musicas.track_name IS
+    'Nome da faixa musical.';
+
+COMMENT ON COLUMN tb_mj_musicas.genero IS
+    'Gênero da música.';
+
+COMMENT ON COLUMN tb_mj_musicas.popularity IS
+    'Popularidade.';
+
+COMMENT ON COLUMN tb_mj_musicas.danceability IS
+    'Índice de quão dançavel é a música.';
+
+COMMENT ON COLUMN tb_mj_musicas.duration_ms IS
+    'Duração da música em milissegundos.';
+
+ALTER TABLE tb_mj_musicas ADD CONSTRAINT tb_mj_musicas_pk PRIMARY KEY ( id_mj_musicas );
+
+CREATE TABLE tb_musica (
+    id_musica      NUMBER(3) NOT NULL,
+    musica         VARCHAR2(200),
+    dancabilidade  NUMBER(6, 6),
+    duracao_ms     NUMBER(15)
+);
+
+COMMENT ON COLUMN tb_musica.id_musica IS
+    'Chave Primária da tabela TB_MUSICAS.';
+
+COMMENT ON COLUMN tb_musica.musica IS
+    'Nome da música que será performada no show.';
+
+COMMENT ON COLUMN tb_musica.dancabilidade IS
+    'Ranking de quão dançavel é a música.';
+
+COMMENT ON COLUMN tb_musica.duracao_ms IS
+    'Quantidade de milissegundos da música.';
+
+ALTER TABLE tb_musica ADD CONSTRAINT tb_musica_pk PRIMARY KEY ( id_musica );
+
+CREATE TABLE tb_perfil (
+    id_perfil  NUMBER(3) NOT NULL,
+    perfil     VARCHAR2(200)
+);
+
+COMMENT ON COLUMN tb_perfil.id_perfil IS
+    'Chave primária da tabela TB_PERFIL.';
+
+COMMENT ON COLUMN tb_perfil.perfil IS
+    'Perfis possíveis de funcionários.';
+
+ALTER TABLE tb_perfil ADD CONSTRAINT tb_perfil_pk PRIMARY KEY ( id_perfil );
+
+CREATE TABLE tb_setor (
+    id_setor       NUMBER(3) NOT NULL,
+    assento        VARCHAR2(200),
+    preco_assento  VARCHAR2(200)
+);
+
+COMMENT ON COLUMN tb_setor.id_setor IS
+    'Chave Primária da tabela TB_SETORES.';
+
+COMMENT ON COLUMN tb_setor.assento IS
+    'Descrição do lugar do estádio.';
+
+COMMENT ON COLUMN tb_setor.preco_assento IS
+    'Preço do assento.';
+
+ALTER TABLE tb_setor ADD CONSTRAINT tb_setor_pk PRIMARY KEY ( id_setor );
+
+CREATE TABLE tb_show (
+    id_show     NUMBER(3) NOT NULL,
+    data_show   DATE,
+    estadio     VARCHAR2(200),
+    capacidade  NUMBER(10),
+    cidade      VARCHAR2(200),
+    uf          VARCHAR2(2)
+);
+
+COMMENT ON COLUMN tb_show.id_show IS
+    'Chave Primária da tabela TB_SHOW.';
+
+COMMENT ON COLUMN tb_show.data_show IS
+    'Data em que irá ocorrer o show.';
+
+COMMENT ON COLUMN tb_show.estadio IS
+    'Estadio onde será realizado o show';
+
+COMMENT ON COLUMN tb_show.cidade IS
+    'Cidade onde será realizado o show.';
+
+COMMENT ON COLUMN tb_show.uf IS
+    'Estado onde será realizado o show.';
+
+ALTER TABLE tb_show ADD CONSTRAINT tb_show_pk PRIMARY KEY ( id_show );
+
+CREATE TABLE tb_show_set (
+    id_show_set            NUMBER NOT NULL,
+    tb_show_id_show        NUMBER(3) NOT NULL,
+    ordem                  NUMBER(2),
+    tb_artista_id_artista  NUMBER(3) NOT NULL,
+    tb_musica_id_musica    NUMBER(3) NOT NULL
+);
+
+COMMENT ON COLUMN tb_show_set.id_show_set IS
+    'Chave Primária da tabela TB_SHOW_SET';
+
+COMMENT ON COLUMN tb_show_set.ordem IS
+    'Ordem em que as músicas serão performadas.';
+
+ALTER TABLE tb_show_set
+    ADD CONSTRAINT tb_show_set_pk PRIMARY KEY ( tb_show_id_show,
+                                                tb_artista_id_artista,
+                                                tb_musica_id_musica,
+                                                id_show_set );
+
+CREATE TABLE tb_staff (
+    id_staff         NUMBER(3) NOT NULL,
+    tb_show_id_show  NUMBER(3) NOT NULL,
+    tb_func_id_func  NUMBER(3) NOT NULL
+);
+
+COMMENT ON COLUMN tb_staff.id_staff IS
+    'Chave primária da tabela TB_STAFF';
+
+ALTER TABLE tb_staff ADD CONSTRAINT tb_staff_pk PRIMARY KEY ( id_staff,
+                                                              tb_show_id_show );
+
+ALTER TABLE tb_efeitos_show
+    ADD CONSTRAINT tb_efeitos_show_tb_efeitos_fk FOREIGN KEY ( tb_efeitos_id_efeito )
+        REFERENCES tb_efeitos ( id_efeito );
+
+ALTER TABLE tb_efeitos_show
+    ADD CONSTRAINT tb_efeitos_show_tb_musica_fk FOREIGN KEY ( tb_musica_id_musica )
+        REFERENCES tb_musica ( id_musica );
+
+ALTER TABLE tb_efeitos_show
+    ADD CONSTRAINT tb_efeitos_show_tb_show_fk FOREIGN KEY ( tb_show_id_show )
+        REFERENCES tb_show ( id_show );
+
+ALTER TABLE tb_equip_show
+    ADD CONSTRAINT tb_equip_show_tb_equip_fk FOREIGN KEY ( tb_equip_id_equip )
+        REFERENCES tb_equip ( id_equip );
+
+ALTER TABLE tb_equip_show
+    ADD CONSTRAINT tb_equip_show_tb_show_fk FOREIGN KEY ( tb_show_id_show )
+        REFERENCES tb_show ( id_show );
+
+ALTER TABLE tb_func
+    ADD CONSTRAINT tb_func_tb_perfil_fk FOREIGN KEY ( tb_perfil_id_perfil )
+        REFERENCES tb_perfil ( id_perfil );
+
+ALTER TABLE tb_ingresso
+    ADD CONSTRAINT tb_ingresso_tb_setor_fk FOREIGN KEY ( tb_setor_id_setor )
+        REFERENCES tb_setor ( id_setor );
+
+ALTER TABLE tb_ingresso
+    ADD CONSTRAINT tb_ingresso_tb_show_fk FOREIGN KEY ( tb_show_id_show )
+        REFERENCES tb_show ( id_show );
+
+ALTER TABLE tb_show_set
+    ADD CONSTRAINT tb_show_set_tb_artista_fk FOREIGN KEY ( tb_artista_id_artista )
+        REFERENCES tb_artista ( id_artista );
+
+ALTER TABLE tb_show_set
+    ADD CONSTRAINT tb_show_set_tb_musica_fk FOREIGN KEY ( tb_musica_id_musica )
+        REFERENCES tb_musica ( id_musica );
+
+ALTER TABLE tb_show_set
+    ADD CONSTRAINT tb_show_set_tb_show_fk FOREIGN KEY ( tb_show_id_show )
+        REFERENCES tb_show ( id_show );
+
+ALTER TABLE tb_staff
+    ADD CONSTRAINT tb_staff_tb_func_fk FOREIGN KEY ( tb_func_id_func )
+        REFERENCES tb_func ( id_func );
+
+ALTER TABLE tb_staff
+    ADD CONSTRAINT tb_staff_tb_show_fk FOREIGN KEY ( tb_show_id_show )
+        REFERENCES tb_show ( id_show );
+
+
+
+-- Relatório do Resumo do Oracle SQL Developer Data Modeler: 
+-- 
+-- CREATE TABLE                            16
+-- CREATE INDEX                             0
+-- ALTER TABLE                             29
+-- CREATE VIEW                              0
+-- ALTER VIEW                               0
+-- CREATE PACKAGE                           0
+-- CREATE PACKAGE BODY                      0
+-- CREATE PROCEDURE                         0
+-- CREATE FUNCTION                          0
+-- CREATE TRIGGER                           0
+-- ALTER TRIGGER                            0
+-- CREATE COLLECTION TYPE                   0
+-- CREATE STRUCTURED TYPE                   0
+-- CREATE STRUCTURED TYPE BODY              0
+-- CREATE CLUSTER                           0
+-- CREATE CONTEXT                           0
+-- CREATE DATABASE                          0
+-- CREATE DIMENSION                         0
+-- CREATE DIRECTORY                         0
+-- CREATE DISK GROUP                        0
+-- CREATE ROLE                              0
+-- CREATE ROLLBACK SEGMENT                  0
+-- CREATE SEQUENCE                          0
+-- CREATE MATERIALIZED VIEW                 0
+-- CREATE MATERIALIZED VIEW LOG             0
+-- CREATE SYNONYM                           0
+-- CREATE TABLESPACE                        0
+-- CREATE USER                              0
+-- 
+-- DROP TABLESPACE                          0
+-- DROP DATABASE                            0
+-- 
+-- REDACTION POLICY                         0
+-- 
+-- ORDS DROP SCHEMA                         0
+-- ORDS ENABLE SCHEMA                       0
+-- ORDS ENABLE OBJECT                       0
+-- 
+-- ERRORS                                   0
+-- WARNINGS                                 0
